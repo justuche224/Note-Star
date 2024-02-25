@@ -1,7 +1,7 @@
 import { FaPen, FaTrash } from "react-icons/fa";
 import Link from "next/link";
 
-export const NoteItem = ({ note, handleDeleteNote }) => {
+export const NoteItem = ({ note, handleDeleteNote, handleNoteClick }) => {
   const calculateElapsedTime = (creationDateTime) => {
     const creationTime = new Date(creationDateTime).getTime();
     const currentTime = new Date().getTime();
@@ -36,7 +36,10 @@ export const NoteItem = ({ note, handleDeleteNote }) => {
   };
 
   return (
-    <div className="p-2 bg-[#e8e7f7] dark:bg-gray-800">
+    <div
+      className="p-2 bg-[#e8e7f7] dark:bg-gray-800"
+      onClick={() => handleNoteClick(note)}
+    >
       <h1 className="text-center font-bold text-xl mb-2">{note.title}</h1>
       <hr className="task-divider" />
       <p className="note text-lg pb-2">{note.body}</p>

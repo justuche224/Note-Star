@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import InlineLoader from "./loading/InlineLoader";
 import "../styles/Note.css";
+import { useRouter } from "next/navigation";
 
-export default function Editor({ addNote }) {
+export default function Editor() {
   const [message, setMessage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
   const { data: session } = useSession();
 
   const handleSubmit = async (e) => {
@@ -28,7 +30,6 @@ export default function Editor({ addNote }) {
       console.log("Title:", title);
       console.log("Body:", body);
 
-      // Inside Editor component
       try {
         const response = await fetch("/api/note/new", {
           method: "POST",
@@ -41,9 +42,9 @@ export default function Editor({ addNote }) {
         if (response.ok) {
           titleElement.innerText = "";
           bodyElement.innerText = "";
-          // Assuming your response contains the newly created note object
-          const newNote = await response.json();
-          addNote(newNote); // Call the function passed down from the parent
+          // const newNote = await response.json();
+          // addNote(newNote);
+          router.push("/");
         }
       } catch (error) {
         console.log(error);

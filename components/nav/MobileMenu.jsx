@@ -8,12 +8,13 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
+import Themes from "./Themes";
 
 const MobileMenu = ({ session, toggleMoileMenu }) => {
   return (
     <>
       <div className="md:hidden block gap-8 w-[60%] min-h-screen fixed top-16 -right-2 bg-slate-300 dark:bg-gray-900">
-        <div className="block md:hidden items-center">
+        <div className="block md:hidden">
           <div className="flex content-center justify-center gap-2 p-3">
             <div>
               <Link
@@ -48,9 +49,7 @@ const MobileMenu = ({ session, toggleMoileMenu }) => {
                 </button>
               </div>
             ) : (
-              <Link href="http://localhost:3000/auth/signin">
-                Log In or Sign Up
-              </Link>
+              <Link href="/auth/signin">Log In or Sign Up</Link>
             )}
           </div>
           <Link
@@ -81,6 +80,9 @@ const MobileMenu = ({ session, toggleMoileMenu }) => {
           >
             <FaTrash className="inline-block" /> Deleted
           </Link>
+        </div>
+        <div className="grid place-content-center mt-3">
+          <Themes />
         </div>
       </div>
     </>

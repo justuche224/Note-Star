@@ -80,7 +80,7 @@ export default function NotePage() {
           type="button"
           className="px-3 py-2 bg-blue-700 text-white hover:opacity-80 mt-2 rounded-md"
         >
-          <Link href="http://localhost:3000/auth/signin">
+          <Link href="/auth/signin">
             Log In or Sign Up
           </Link>
         </button>

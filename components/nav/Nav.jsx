@@ -25,7 +25,7 @@ const Nav = () => {
               <Link href="/">
                 <Image
                   className="rounded-full"
-                  src="/next.svg"
+                  src="/icons/SGN_02_24_2024_1708808302589.png"
                   height={35}
                   width={35}
                   alt="Logo"

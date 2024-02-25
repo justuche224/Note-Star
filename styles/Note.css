@@ -1,0 +1,50 @@
+.note-title,
+.note-body {
+  color: blue;
+  width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.note-container {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.note-container div {
+  transition: all 0.5s cubic-bezier(0.15, 0.83, 0.66, 1);
+  cursor: pointer;
+}
+
+.note {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
+  margin: 8px 0;
+}
+
+.note-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-deadline {
+  font-weight: bold;
+}
+
+.task-actions {
+  display: flex;
+  align-items: center;
+}
+
+.task-actions span {
+  margin: 8px;
+}
+
+.task-divider {
+  border: 0.5px solid #ddd;
+  margin: 12px 0;
+}

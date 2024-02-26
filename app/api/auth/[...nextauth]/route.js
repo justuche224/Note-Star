@@ -14,6 +14,9 @@ const handler = NextAuth({
     signIn: "/auth/signin",
     error: "/auth/error",
   },
+  session: {
+    maxAge: 30 * 24 * 60 * 60,
+  },
   callbacks: {
     async session({ session }) {
       const sessionUser = await User.findOne({

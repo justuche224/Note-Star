@@ -1,6 +1,7 @@
 import Nav from "@/components/nav/Nav";
 import Provider from "@/components/Provider";
 import "./globals.css";
+import { SearchProvider } from "./context/SearchContext";
 
 export const metadata = {
   title: "Note Star",
@@ -15,8 +16,10 @@ export default function RootLayout({ children }) {
       </head>
       <Provider>
         <body className="bg-white dark:bg-black min-h-screen text-black dark:text-white">
-          <Nav />
-          <main className=" mt-20">{children}</main>
+          <SearchProvider>
+            <Nav />
+            <main className=" mt-20">{children}</main>
+          </SearchProvider>
         </body>
       </Provider>
     </html>

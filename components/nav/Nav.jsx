@@ -7,10 +7,12 @@ import Image from "next/image";
 import { FaBars, FaPlus, FaSearch, FaTimes } from "react-icons/fa";
 import MobileMenu from "./MobileMenu";
 import DesktopMenu from "./DesktopMenu";
+import { useSearchContext } from "@/app/context/SearchContext";
 
 const Nav = () => {
   const { data: session } = useSession();
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
+  const { toggleSearchBar } = useSearchContext();
   const toggleMoileMenu = () => {
     setOpenMobileMenu((prev) => !prev);
   };
@@ -44,6 +46,7 @@ const Nav = () => {
               <button
                 aria-label="Search notes"
                 className="bg-gray-100 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
+                onClick={toggleSearchBar}
               >
                 <FaSearch />
               </button>

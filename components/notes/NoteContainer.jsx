@@ -7,15 +7,17 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Suspense } from "react";
 import Modal from "./Modal";
+import { useSearchContext } from "@/app/context/SearchContext";
 
 const NoteContainer = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [notes, setNotes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchingNotes, setFetchingNotes] = useState(false);
-
+  const { showSearchBar } = useSearchContext();
+  const [searchQuery, setSearchQuery] = useState("");
   useEffect(() => {
     const fetchNotes = async () => {
       if (!session) return;
@@ -38,6 +40,33 @@ const NoteContainer = () => {
 
     fetchNotes();
   }, [session]);
+
+  useEffect(() => {
+    const fetchNotes = async () => {
+      if (!session) return;
+      if (searchQuery == "") return;
+      setFetchingNotes(true);
+      try {
+        // Construct the URL with the search query as a parameter
+        const url = `/api/note/search/${encodeURIComponent(searchQuery)}`;
+
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            "user-id": session.user.id,
+          },
+        });
+        const data = await response.json();
+        setNotes(data);
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+      } finally {
+        setFetchingNotes(false);
+      }
+    };
+
+    fetchNotes();
+  }, [session, searchQuery]);
 
   const handleDeleteNote = async (note) => {
     // Display confirmation dialog
@@ -74,10 +103,16 @@ const NoteContainer = () => {
     setSelectedNote(note);
     setShowModal(true);
   };
-
+  if (status === "loading") {
+    return (
+      <div className="w-full grid place-content-center">
+        <InlineLoader />
+      </div>
+    );
+  }
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <section className="min-w-full mt-5 px-3">
+      <section className="min-w-full mt-5">
         {session?.user ? (
           <>
             {showModal && (
@@ -92,10 +127,23 @@ const NoteContainer = () => {
                 <InlineLoader />
               </div>
             )}
+            {showSearchBar && (
+              <div className="max-w-4xl mx-auto text-black">
+                <input
+                  type="text"
+                  aria-label="Seach notes"
+                  placeholder="Search notes...."
+                  value={searchQuery}
+                  className="w-full h-10 p-2 mb-3"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            )}
+
             <div className="note-container max-w-4xl mx-auto grid place-content-center gap-3">
               {notes.map((note) => (
                 <NoteItem
-                  key={note.id}
+                  key={note._id}
                   note={note}
                   handleDeleteNote={handleDeleteNote}
                   handleNoteClick={handleNoteClick}

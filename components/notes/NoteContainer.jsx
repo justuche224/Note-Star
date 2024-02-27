@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import { Suspense } from "react";
 import Modal from "./Modal";
 import { useSearchContext } from "@/app/context/SearchContext";
+import { useDebounce } from "use-debounce";
+import { FaTimesCircle } from "react-icons/fa";
 
 const NoteContainer = () => {
   const { data: session, status } = useSession();
@@ -18,6 +20,11 @@ const NoteContainer = () => {
   const [fetchingNotes, setFetchingNotes] = useState(false);
   const { showSearchBar } = useSearchContext();
   const [searchQuery, setSearchQuery] = useState("");
+  const [errorMessage, setErrorMessage] = useState("fuck you bro");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useDebounce(
+    searchQuery,
+    400
+  );
   useEffect(() => {
     const fetchNotes = async () => {
       if (!session) return;
@@ -32,7 +39,8 @@ const NoteContainer = () => {
         const data = await response.json();
         setNotes(data);
       } catch (error) {
-        console.error("Error fetching notes:", error);
+        setFetchingNotes(false);
+        setErrorMessage("Error fetching notes: " + error.message);
       } finally {
         setFetchingNotes(false);
       }
@@ -44,7 +52,26 @@ const NoteContainer = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       if (!session) return;
-      if (searchQuery == "") return;
+      if (searchQuery.trim() === "") {
+        setFetchingNotes(true);
+        try {
+          const response = await fetch("/api/note", {
+            headers: {
+              "Content-Type": "application/json",
+              "user-id": session.user.id,
+            },
+          });
+          const data = await response.json();
+          setNotes(data);
+        } catch (error) {
+          setFetchingNotes(false);
+          setErrorMessage("Error fetching notes: " + error.message);
+        } finally {
+          setFetchingNotes(false);
+        }
+        return; // Exit the useEffect hook early after refetching all notes
+      }
+
       setFetchingNotes(true);
       try {
         // Construct the URL with the search query as a parameter
@@ -59,14 +86,15 @@ const NoteContainer = () => {
         const data = await response.json();
         setNotes(data);
       } catch (error) {
-        console.error("Error fetching notes:", error);
+        setFetchingNotes(false);
+        setErrorMessage("Error fetching notes: " + error.message);
       } finally {
         setFetchingNotes(false);
       }
     };
 
     fetchNotes();
-  }, [session, searchQuery]);
+  }, [session, debouncedSearchQuery]);
 
   const handleDeleteNote = async (note) => {
     // Display confirmation dialog
@@ -100,6 +128,9 @@ const NoteContainer = () => {
   };
 
   const handleNoteClick = (note) => {
+    if (event.target.closest(".edit") || event.target.closest(".delete")) {
+      return;
+    }
     setSelectedNote(note);
     setShowModal(true);
   };
@@ -139,7 +170,20 @@ const NoteContainer = () => {
                 />
               </div>
             )}
-
+            {errorMessage && (
+              <div className="error-message">
+                <div className="error-message-content bg-white text-black dark:bg-black dark:text-white">
+                  <h1>{errorMessage}</h1>
+                  <button
+                    aria-label="close error message"
+                    onClick={() => setErrorMessage(null)}
+                    className="absolute -top-5 -right-5"
+                  >
+                    <FaTimesCircle size={37} />
+                  </button>
+                </div>
+              </div>
+            )}
             <div className="note-container max-w-4xl mx-auto grid place-content-center gap-3">
               {notes.map((note) => (
                 <NoteItem

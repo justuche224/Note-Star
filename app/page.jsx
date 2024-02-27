@@ -1,5 +1,4 @@
-import Note from "@/components/notes/Note";
-import Image from "next/image";
+import NoteContainer from "@/components/notes/NoteContainer";
 
 export default function Home() {
   return (
@@ -9,7 +8,7 @@ export default function Home() {
         designed to enhance your workflow. Elevate your note-taking experience
         today.
       </h1>
-      <Note />
+      <NoteContainer />
     </main>
   );
 }

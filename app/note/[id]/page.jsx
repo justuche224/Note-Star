@@ -1,14 +1,14 @@
 import NoteDetails from "@/components/notes/NoteDetailes";
 import { Suspense } from "react";
 
-const page = () => {
+const page = ({ params }) => {
   return (
     <Suspense
       fallback={
         <div className="text-center font-bold text-2xl">Loading...</div>
       }
     >
-      <NoteDetails />
+      <NoteDetails params={params} />
     </Suspense>
   );
 };

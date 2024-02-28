@@ -15,13 +15,14 @@ export const metadata = {
     "ideas",
     "productivity",
   ],
+  metadataBase: new URL("https://note-star.vercel.app"),
   openGraph: {
     title: "Note Star: Notes that Empower You",
     description:
       "Capture your thoughts, spark ideas, and achieve your goals with Note Star. The perfect app for students, professionals, and everyone in between.", // A tailored description for social media sharing
     images: [
       {
-        url: "https://note-star.vercel.app//icons/SGN_02_24_2024_1708808302589.png",
+        url: "/icons/SGN_02_24_2024_1708808302589.png",
         width: 1920,
         height: 1920,
       },

@@ -10,6 +10,7 @@ const NoteDetails = ({ params }) => {
   const [note, setNote] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  console.log(params);
   const noteID = params.id;
   useEffect(() => {
     const fetchPost = async () => {

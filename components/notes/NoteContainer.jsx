@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Suspense } from "react";
-import Modal from "./Modal";
 import { useSearchContext } from "@/app/context/SearchContext";
 import { useDebounce } from "use-debounce";
 import { FaTimesCircle } from "react-icons/fa";

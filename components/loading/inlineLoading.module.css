@@ -5,7 +5,7 @@
   border: 4.5px solid #0000;
   border-radius: 50%;
   border-color: #dbdcef #0000;
-  animation: spinner-e04l1k 1s infinite linear;
+  animation: spinner-e04l1k 2s infinite linear;
 }
 
 .spinner::before,
@@ -20,7 +20,7 @@
 .spinner::before {
   border-color: #474bff #0000;
   animation: inherit;
-  animation-duration: 0.5s;
+  animation-duration: 1s;
   animation-direction: reverse;
 }
 

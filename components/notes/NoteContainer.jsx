@@ -10,17 +10,18 @@ import Modal from "./Modal";
 import { useSearchContext } from "@/app/context/SearchContext";
 import { useDebounce } from "use-debounce";
 import { FaTimesCircle } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const NoteContainer = () => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [notes, setNotes] = useState([]);
-  const [showModal, setShowModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchingNotes, setFetchingNotes] = useState(false);
   const { showSearchBar } = useSearchContext();
   const [searchQuery, setSearchQuery] = useState("");
-  const [errorMessage, setErrorMessage] = useState("fuck you bro");
+  const [errorMessage, setErrorMessage] = useState(null);
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useDebounce(
     searchQuery,
     400
@@ -132,7 +133,7 @@ const NoteContainer = () => {
       return;
     }
     setSelectedNote(note);
-    setShowModal(true);
+    router.push(`/note/${note._id}`);
   };
   if (status === "loading") {
     return (
@@ -146,13 +147,6 @@ const NoteContainer = () => {
       <section className="min-w-full mt-5">
         {session?.user ? (
           <>
-            {showModal && (
-              <Modal
-                selectedNote={selectedNote}
-                setShowModal={setShowModal}
-                handleDeleteNote={handleDeleteNote}
-              />
-            )}
             {fetchingNotes && (
               <div className="w-full grid place-content-center">
                 <InlineLoader />

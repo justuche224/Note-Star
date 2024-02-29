@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/icons/favicon.ico" sizes="any" />
       </head>
       <Provider>
-        <body className=" bg-blue-200 dark:bg-black min-h-screen text-black dark:text-white relative">
+        <body className=" bg-blue-100 dark:bg-black min-h-screen text-black dark:text-white relative">
           <NoteProvider>
             <Nav />
             <main className=" mt-20">{children}</main>

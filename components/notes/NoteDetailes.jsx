@@ -5,14 +5,17 @@ import { useEffect, useState } from "react";
 import InlineLoader from "@/components/loading/InlineLoader";
 import { FaArrowCircleLeft, FaPen, FaTrash } from "react-icons/fa";
 import Link from "next/link";
+import { useNoteContext } from "@/app/context/SearchContext";
 import parse from "html-react-parser";
 
 const NoteDetails = ({ params }) => {
   const [note, setNote] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { selectedNote, setSelectedNote } = useNoteContext();
   const router = useRouter();
   console.log(params);
   const noteID = params.id;
+
   useEffect(() => {
     const fetchPost = async () => {
       if (!noteID) {
@@ -21,30 +24,36 @@ const NoteDetails = ({ params }) => {
       }
 
       try {
-        const response = await fetch(`/api/note/${noteID}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch post data");
+        let fetchedNote = null;
+        if (selectedNote && selectedNote._id === noteID) {
+          // If selectedNote exists and its _id matches params.id, set the note
+          fetchedNote = selectedNote;
+        } else {
+          // If no selectedNote or its _id doesn't match params.id, make API call
+          const response = await fetch(`/api/note/${noteID}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch post data");
+          }
+          const data = await response.json();
+          fetchedNote = data.note;
         }
-        const data = await response.json();
-        setNote(data.note);
+        setNote(fetchedNote);
       } catch (error) {
         console.error("Error fetching post:", error);
-        // Handle error (display message, redirect, etc.)
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchPost();
-  }, [noteID, router]);
+  }, [noteID, router, selectedNote]);
 
   const handleDeleteNote = async () => {
-    // Display confirmation dialog
     const confirmed = window.confirm(
       "Are you sure you want to delete this note?"
     );
     if (!confirmed) {
-      return; // Exit if user cancels
+      return;
     }
     setIsLoading(true);
     try {
@@ -61,7 +70,6 @@ const NoteDetails = ({ params }) => {
       router.push("/");
     } catch (error) {
       console.error("Error deleting note:", error);
-      // Handle deletion error (e.g., display error message)
     } finally {
       setIsLoading(false);
     }
@@ -95,7 +103,7 @@ const NoteDetails = ({ params }) => {
     return elapsedTime || "Just now";
   };
   return (
-    <main>
+    <main className="max-w-4xl mx-auto ">
       <button
         type="button"
         aria-label="go back"
@@ -105,7 +113,7 @@ const NoteDetails = ({ params }) => {
         <FaArrowCircleLeft size={30} />
       </button>
       {isLoading && (
-        <div className="w-full h-full absolute left-0 top-0 grid place-content-center bg-[#00000050] dark:bg-[#ffffff50]">
+        <div className="w-full h-full fixed left-0 top-0 grid place-content-center bg-[#00000050] dark:bg-[#ffffff50]">
           <InlineLoader />
         </div>
       )}

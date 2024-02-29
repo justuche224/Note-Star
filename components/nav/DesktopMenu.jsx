@@ -1,10 +1,4 @@
-import {
-  FaBell,
-  FaBook,
-  FaQuestionCircle,
-  FaTrash,
-  FaUserCircle,
-} from "react-icons/fa";
+import { FaBell, FaBook, FaQuestionCircle, FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
@@ -17,31 +11,24 @@ const DesktopMenu = ({ session }) => {
         <div className="hidden md:flex items-center">
           <Link
             className="p-2 py-2.5 text-sm leading-none underline-offset-4 hover:underline md:p-3 text-black underline decoration-black dark:text-gray-200 dark:decoration-gray-200 block"
-            href="/docs"
+            href="/"
             title="Create Task"
           >
             <FaBook className="inline-block" /> Notes
           </Link>
           <Link
             className="p-2 py-2.5 text-sm leading-none underline-offset-4 hover:underline md:p-3 text-black underline decoration-black dark:text-gray-200 dark:decoration-gray-200 block"
-            href="/docs"
+            href="/tasks"
             title="Create Task"
           >
             <FaBell className="inline-block" /> Tasks
           </Link>
           <Link
             className="p-2 py-2.5 text-sm leading-none underline-offset-4 hover:underline md:p-3 text-black underline decoration-black dark:text-gray-200 dark:decoration-gray-200 block"
-            href="/docs"
+            href="/help"
             title="Create Task"
           >
             <FaQuestionCircle className="inline-block" /> Help & feedback
-          </Link>
-          <Link
-            className="p-2 py-2.5 text-sm leading-none underline-offset-4 hover:underline md:p-3 text-black underline decoration-black dark:text-gray-200 dark:decoration-gray-200 block"
-            href="/docs"
-            title="Create Task"
-          >
-            <FaTrash className="inline-block" /> Deleted
           </Link>
         </div>
         <div className="flex content-center justify-center gap-2 p-3">

@@ -188,13 +188,13 @@ const UpdateNote = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col px-3">
       <div>
         <input
           type="text"
           placeholder="Note Title"
           aria-label="note title"
-          className="my-3 p-1 border border-gray-400 rounded"
+          className="my-3 p-1 border dark:bg-[#3d3d3d] text-white border-gray-400 rounded w-full"
           value={title}
           onChange={handleTitleChange}
         />

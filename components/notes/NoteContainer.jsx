@@ -15,8 +15,14 @@ import parse from "html-react-parser";
 const NoteContainer = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { notes, setNotes, errorMessage, setErrorMessage } = useNoteContext();
-  const [selectedNote, setSelectedNote] = useState(null);
+  const {
+    notes,
+    setNotes,
+    errorMessage,
+    setErrorMessage,
+    setSelectedNote,
+    fetchNotesIfNeeded,
+  } = useNoteContext();
   const [isLoading, setIsLoading] = useState(false);
   const [fetchingNotes, setFetchingNotes] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,28 +31,8 @@ const NoteContainer = () => {
     400
   );
   useEffect(() => {
-    const fetchNotes = async () => {
-      if (!session) return;
-      setFetchingNotes(true);
-      try {
-        const response = await fetch("/api/note", {
-          headers: {
-            "Content-Type": "application/json",
-            "user-id": session.user.id,
-          },
-        });
-        const data = await response.json();
-        setNotes(data);
-      } catch (error) {
-        setFetchingNotes(false);
-        setErrorMessage("Error fetching notes: " + error.message);
-      } finally {
-        setFetchingNotes(false);
-      }
-    };
-
-    fetchNotes();
-  }, [session]);
+    fetchNotesIfNeeded(session); // Call the function to fetch notes
+  }, [session, fetchNotesIfNeeded]);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -158,7 +144,7 @@ const NoteContainer = () => {
                 aria-label="Seach notes"
                 placeholder="Search notes...."
                 value={searchQuery}
-                className="w-full h-10 p-2 mb-3"
+                className="w-full h-10 p-2 mb-3 dark:bg-[#3d3d3d] text-white rounded"
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>

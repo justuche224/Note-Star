@@ -1,15 +1,9 @@
-import {
-  FaBell,
-  FaBook,
-  FaQuestionCircle,
-  FaTrash,
-  FaUserCircle,
-} from "react-icons/fa";
+import { FaBell, FaBook, FaQuestionCircle, FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 
-const MobileMenu = ({ session, setOpenMobileMenu }) => {
+const MobileMenu = ({ session, setOpenMobileMenu, openMobileMenu }) => {
   const handleMenuClick = () => {
     if (event.target.closest(".main-mobile")) {
       return;
@@ -22,7 +16,7 @@ const MobileMenu = ({ session, setOpenMobileMenu }) => {
       className="w-full bg-[#00000075] md:hidden fixed top-16 min-h-screen left-0"
       onClick={handleMenuClick}
     >
-      <div className="main-mobile md:hidden block gap-8 w-[60%] min-h-screen fixed top-16 -right-2 bg-white dark:bg-gray-900 shadow-2xl">
+      <div className="main-mobile md:hidden block gap-8 w-[60%] min-h-screen fixed top-16 -right-2 bg-white dark:bg-black shadow-2xl">
         <div className="block md:hidden">
           <div className="flex content-center justify-center gap-2 p-3">
             <div>
@@ -62,31 +56,27 @@ const MobileMenu = ({ session, setOpenMobileMenu }) => {
           </div>
           <Link
             className="p-2 py-2.5 text-sm leading-none underline-offset-4 hover:underline md:p-3 text-black underline decoration-black dark:text-gray-200 dark:decoration-gray-200 block"
-            href="/docs"
-            title="Create Task"
+            href="/"
+            title="Notes"
+            onClick={() => setOpenMobileMenu(false)}
           >
             <FaBook className="inline-block" /> Notes
           </Link>
           <Link
             className="p-2 py-2.5 text-sm leading-none underline-offset-4 hover:underline md:p-3 text-black underline decoration-black dark:text-gray-200 dark:decoration-gray-200 block"
-            href="/docs"
-            title="Create Task"
+            href="/tasks"
+            title="Tasks"
+            onClick={() => setOpenMobileMenu(false)}
           >
             <FaBell className="inline-block" /> Tasks
           </Link>
           <Link
             className="p-2 py-2.5 text-sm leading-none underline-offset-4 hover:underline md:p-3 text-black underline decoration-black dark:text-gray-200 dark:decoration-gray-200 block"
-            href="/docs"
-            title="Create Task"
+            href="/help"
+            title="Help & feedback"
+            onClick={() => setOpenMobileMenu(false)}
           >
             <FaQuestionCircle className="inline-block" /> Help & feedback
-          </Link>
-          <Link
-            className="p-2 py-2.5 text-sm leading-none underline-offset-4 hover:underline md:p-3 text-black underline decoration-black dark:text-gray-200 dark:decoration-gray-200 block"
-            href="/docs"
-            title="Create Task"
-          >
-            <FaTrash className="inline-block" /> Deleted
           </Link>
         </div>
       </div>

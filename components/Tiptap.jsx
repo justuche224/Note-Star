@@ -165,7 +165,7 @@ export const Tiptap = () => {
           type="text"
           placeholder="Note Title"
           aria-label="note title"
-          className="my-3 p-1 border border-gray-400 rounded"
+          className="my-3 p-1 border dark:bg-[#3d3d3d] text-white border-gray-400 rounded w-full"
           value={title}
           onChange={handleTitleChange}
         />
@@ -184,7 +184,7 @@ export const Tiptap = () => {
         type="button"
         aria-label="submit note"
         onClick={handleSubmit}
-        className="bg-white rounded-full text-black shadow px-3 py-1 mt-2 self-end"
+        className="bg-blue-600 rounded-lg hover:opacity-85 text-white shadow px-3 py-1 mt-2 self-end"
       >
         Submit
       </button>

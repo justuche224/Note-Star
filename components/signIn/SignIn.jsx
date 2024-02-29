@@ -2,6 +2,7 @@
 import { signIn, getProviders, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useSearchParams, redirect } from "next/navigation";
+import Image from "next/image";
 
 export default function SignIn() {
   const searchParams = useSearchParams();
@@ -46,7 +47,7 @@ export default function SignIn() {
   }, [session, callbackUrl, redirecting]);
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center mt-10">
       {redirecting ? (
         <p className="text-lg text-gray-600">Redirecting...</p>
       ) : (
@@ -62,13 +63,24 @@ export default function SignIn() {
             <p className="mb-4 text-gray-600">Loading providers...</p>
           ) : providers && !session ? (
             <div>
+              <h1 className="text-center text-2xl my-4">
+                Sign in to Note Star
+              </h1>
               {Object.values(providers).map((provider) => (
                 <button
                   key={provider.name}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-2"
+                  className=" flex justify-center content-center text-center w-full bg-white hover:bg-slate-200 transition-all text-black font-bold py-2 px-4 rounded-full mb-2"
                   onClick={() => signIn(provider.id)}
                 >
-                  Sign in with {provider.name}
+                  <Image
+                    src="/icons/icons8-google-96.svg"
+                    alt="google"
+                    width={40}
+                    height={40}
+                  />
+                  <span className="mt-2 text-xl ml-2">
+                    Continue with Google
+                  </span>
                 </button>
               ))}
             </div>

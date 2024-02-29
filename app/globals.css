@@ -10,14 +10,6 @@ body {
   scrollbar-width: none;
 }
 
-.note-title,
-.note-body {
-  color: blue;
-  width: 100%;
-  max-width: 100%;
-  word-wrap: break-word;
-}
-
 .note-container {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
@@ -34,13 +26,7 @@ body {
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   white-space: normal;
-  margin: 8px 0;
-}
-
-.note-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  height: 200px;
 }
 
 .task-deadline {
@@ -118,6 +104,14 @@ body {
 .ProseMirror ul,
 .ProseMirror ol {
   padding: 0 2rem;
+}
+
+.ProseMirror ul {
+  list-style-type: square;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
 }
 
 .ProseMirror h1,

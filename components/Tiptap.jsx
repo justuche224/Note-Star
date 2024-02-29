@@ -5,10 +5,10 @@ import { useState } from "react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import { useSession } from "next-auth/react";
-import parse from "html-react-parser";
+import { useNoteContext } from "@/app/context/SearchContext";
+import InlineLoader from "./loading/InlineLoader";
 import {
   FaBold,
-  FaHeading,
   FaItalic,
   FaListOl,
   FaListUl,
@@ -30,71 +30,64 @@ const MenuBar = ({ editor }) => {
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={editor.isActive("bold") ? "is_active" : ""}
+          aria-label="bold"
         >
           <FaBold />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={editor.isActive("italic") ? "is_active" : ""}
+          aria-label="italic"
         >
           <FaItalic />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           className={editor.isActive("underline") ? "is_active" : ""}
+          aria-label="underline"
         >
           <FaUnderline />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           className={editor.isActive("strike") ? "is_active" : ""}
+          aria-label="strike through"
         >
           <FaStrikethrough />
         </button>
         <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 2 }) ? "is_active" : ""
-          }
-        >
-          <FaHeading />
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 3 }) ? "is_active" : ""
-          }
-        >
-          <FaHeading className="heading3" />
-        </button>
-        <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive("bulletList") ? "is_active" : ""}
+          aria-label="bullet list"
         >
           <FaListUl />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={editor.isActive("orderedList") ? "is_active" : ""}
+          aria-label="ordered list"
         >
           <FaListOl />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={editor.isActive("blockquote") ? "is_active" : ""}
+          aria-label="quote"
         >
           <FaQuoteLeft />
         </button>
       </div>
       <div>
-        <button onClick={() => editor.chain().focus().undo().run()}>
+        <button
+          onClick={() => editor.chain().focus().undo().run()}
+          aria-label="undo"
+        >
           <FaUndo />
         </button>
-        <button onClick={() => editor.chain().focus().redo().run()}>
+        <button
+          onClick={() => editor.chain().focus().redo().run()}
+          aria-label="redo"
+        >
           <FaRedo />
         </button>
       </div>
@@ -106,7 +99,8 @@ export const Tiptap = () => {
   const { data: session } = useSession();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [note, setNote] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
+  const { setNotes, setErrorMessage } = useNoteContext();
   const [message, setMessage] = useState(null);
   const editor = useEditor({
     extensions: [StarterKit, Underline],
@@ -123,7 +117,7 @@ export const Tiptap = () => {
   };
 
   const addNote = (newNote) => {
-    setNote((prevNotes) => [...prevNotes, newNote]);
+    setNotes((prevNotes) => [newNote, ...prevNotes]);
   };
 
   const handleSubmit = async (e) => {
@@ -139,7 +133,7 @@ export const Tiptap = () => {
       setMessage("Please enter note.");
     } else {
       setMessage(null);
-      //setSubmitting(true);
+      setSubmitting(true);
       try {
         const response = await fetch("/api/note/new", {
           method: "POST",
@@ -150,18 +144,16 @@ export const Tiptap = () => {
           }),
         });
         if (response.ok) {
+          const newNote = await response.json();
+          addNote(newNote);
           setTitle("");
           setBody("");
           editor.commands.setContent("");
-          const newNote = await response.json();
-          addNote(newNote);
-          //router.push("/");
         }
       } catch (error) {
-        console.log(error);
+        setErrorMessage(`Error: ${error}`);
       } finally {
-        // setSubmitting(false);
-        alert("done");
+        setSubmitting(false);
       }
     }
   };
@@ -171,10 +163,9 @@ export const Tiptap = () => {
       <div>
         <input
           type="text"
-          name="note title"
           placeholder="Note Title"
           aria-label="note title"
-          className="my-3 p-1 border border-gray-400"
+          className="my-3 p-1 border border-gray-400 rounded"
           value={title}
           onChange={handleTitleChange}
         />
@@ -183,26 +174,20 @@ export const Tiptap = () => {
         <MenuBar editor={editor} />
         <EditorContent editor={editor} />
       </div>
-      {/* <div className="ProseMirror">{parse(body)}</div> */}
       {message && <p className="text-red-500">{message}</p>}
+      {submitting && (
+        <div className="w-full min-h-screen fixed left-0 top-0 grid place-content-center bg-[#00000050] dark:bg-[#ffffff50] z-[500]">
+          <InlineLoader />
+        </div>
+      )}
       <button
         type="button"
         aria-label="submit note"
         onClick={handleSubmit}
-        className="bg-white rounded-full text-black shadow px-3 py-1 my-2 self-end"
+        className="bg-white rounded-full text-black shadow px-3 py-1 mt-2 self-end"
       >
         Submit
       </button>
-      <br />
-      <br />
-      <div>
-        {note?.map((note) => (
-          <div key={note._id}>
-            <h1>{note.title}</h1>
-            <div className="ProseMirror">{parse(note.body)}</div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

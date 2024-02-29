@@ -2,20 +2,19 @@
 
 import { createContext, useState, useContext } from "react";
 
-const SearchContext = createContext();
+const NoteContext = createContext();
 
-export const useSearchContext = () => useContext(SearchContext);
+export const useNoteContext = () => useContext(NoteContext);
 
-export const SearchProvider = ({ children }) => {
-  const [showSearchBar, setShowSearchBar] = useState(false);
-
-  const toggleSearchBar = () => {
-    setShowSearchBar((prevState) => !prevState);
-  };
+export const NoteProvider = ({ children }) => {
+  const [notes, setNotes] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   return (
-    <SearchContext.Provider value={{ showSearchBar, toggleSearchBar }}>
+    <NoteContext.Provider
+      value={{ notes, setNotes, errorMessage, setErrorMessage }}
+    >
       {children}
-    </SearchContext.Provider>
+    </NoteContext.Provider>
   );
 };

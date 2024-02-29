@@ -6,21 +6,20 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Suspense } from "react";
-import { useSearchContext } from "@/app/context/SearchContext";
+import { useNoteContext } from "@/app/context/SearchContext";
 import { useDebounce } from "use-debounce";
 import { FaTimesCircle } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import parse from "html-react-parser";
 
 const NoteContainer = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [notes, setNotes] = useState([]);
+  const { notes, setNotes, errorMessage, setErrorMessage } = useNoteContext();
   const [selectedNote, setSelectedNote] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchingNotes, setFetchingNotes] = useState(false);
-  const { showSearchBar } = useSearchContext();
   const [searchQuery, setSearchQuery] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useDebounce(
     searchQuery,
     400
@@ -94,6 +93,7 @@ const NoteContainer = () => {
     };
 
     fetchNotes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, debouncedSearchQuery]);
 
   const handleDeleteNote = async (note) => {
@@ -151,18 +151,17 @@ const NoteContainer = () => {
                 <InlineLoader />
               </div>
             )}
-            {showSearchBar && (
-              <div className="max-w-4xl mx-auto text-black">
-                <input
-                  type="text"
-                  aria-label="Seach notes"
-                  placeholder="Search notes...."
-                  value={searchQuery}
-                  className="w-full h-10 p-2 mb-3"
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            )}
+
+            <div className="max-w-4xl mx-auto text-black">
+              <input
+                type="text"
+                aria-label="Seach notes"
+                placeholder="Search notes...."
+                value={searchQuery}
+                className="w-full h-10 p-2 mb-3"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
             {errorMessage && (
               <div className="error-message">
                 <div className="error-message-content bg-white text-black dark:bg-black dark:text-white">
@@ -182,8 +181,9 @@ const NoteContainer = () => {
                 <NoteItem
                   key={note._id}
                   note={note}
-                  handleDeleteNote={handleDeleteNote}
+                  parse={parse}
                   handleNoteClick={handleNoteClick}
+                  handleDeleteNote={handleDeleteNote}
                 />
               ))}
             </div>

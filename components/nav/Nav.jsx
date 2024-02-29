@@ -3,15 +3,16 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaBars, FaPlus, FaSearch, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import MobileMenu from "./MobileMenu";
 import DesktopMenu from "./DesktopMenu";
-import { useSearchContext } from "@/app/context/SearchContext";
+// import { useSearchContext } from "@/app/context/SearchContext";
+import Themes from "./Themes";
 
 const Nav = () => {
   const { data: session } = useSession();
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
-  const { toggleSearchBar } = useSearchContext();
+  // const { toggleSearchBar } = useSearchContext();
   const toggleMoileMenu = () => {
     setOpenMobileMenu((prev) => !prev);
   };
@@ -34,21 +35,7 @@ const Nav = () => {
               </Link>
             </div>
             <div className="flex items-center gap-2">
-              {/* <button
-                aria-label="Create note"
-                className="bg-blue-200 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
-              >
-                <Link href="/create-note" title="Create note">
-                  <FaPlus />
-                </Link>
-              </button> */}
-              <button
-                aria-label="Search notes"
-                className="bg-blue-200 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
-                onClick={toggleSearchBar}
-              >
-                <FaSearch />
-              </button>
+              <Themes />
               <button
                 onClick={toggleMoileMenu}
                 aria-label="Toggle menu"

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import InlineLoader from "@/components/loading/InlineLoader";
 import { FaArrowCircleLeft, FaPen, FaTrash } from "react-icons/fa";
 import Link from "next/link";
+import parse from "html-react-parser";
 
 const NoteDetails = ({ params }) => {
   const [note, setNote] = useState(null);
@@ -114,7 +115,7 @@ const NoteDetails = ({ params }) => {
           <h1 className="italic text-center text-lg mb-2">
             {calculateElapsedTime(note.creationDateTime)} ago
           </h1>
-          <h1>{note.body}</h1>
+          <div>{parse(note.body)}</div>
           <div className="flex gap-3 mt-5 justify-center content-center">
             <button
               aria-label="Edit note"

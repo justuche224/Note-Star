@@ -1,5 +1,4 @@
 "use client";
-//rember no theme option for big screen <Themes />
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -20,7 +19,7 @@ const Nav = () => {
   return (
     <nav aria-label="Navigation Bar" className=" ">
       <div className="m-auto">
-        <div className="px-4 sm:px-6 lg:px-8 fixed top-0 border-b border-gray-400 bg-gray-300 dark:bg-gray-900 z-50 flex h-16 w-full items-center justify-between py-3">
+        <div className="px-4 sm:px-6 lg:px-8 fixed top-0 border-b border-gray-400 bg-white dark:bg-gray-900 z-50 flex h-16 w-full items-center justify-between py-3">
           <div className="flex w-full items-center justify-between gap-4 sm:gap-5 md:w-auto">
             <div className="logo">
               <Link href="/">
@@ -35,17 +34,17 @@ const Nav = () => {
               </Link>
             </div>
             <div className="flex items-center gap-2">
-              <button
+              {/* <button
                 aria-label="Create note"
-                className="bg-gray-100 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
+                className="bg-blue-200 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
               >
                 <Link href="/create-note" title="Create note">
                   <FaPlus />
                 </Link>
-              </button>
+              </button> */}
               <button
                 aria-label="Search notes"
-                className="bg-gray-100 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
+                className="bg-blue-200 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
                 onClick={toggleSearchBar}
               >
                 <FaSearch />
@@ -53,7 +52,7 @@ const Nav = () => {
               <button
                 onClick={toggleMoileMenu}
                 aria-label="Toggle menu"
-                className="md:hidden bg-gray-100 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
+                className="md:hidden bg-blue-200 hover:bg-gray-200 [[open]>&amp;]:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:[[open]>&amp;]:bg-gray-700 _no-triangle grid h-10 w-10 place-items-center rounded-full"
               >
                 {openMobileMenu ? <FaTimes /> : <FaBars />}
               </button>
@@ -63,7 +62,10 @@ const Nav = () => {
           <DesktopMenu session={session} />
           {/* mobile Menu */}
           {openMobileMenu && (
-            <MobileMenu session={session} toggleMoileMenu={toggleMoileMenu} />
+            <MobileMenu
+              session={session}
+              setOpenMobileMenu={setOpenMobileMenu}
+            />
           )}
         </div>
       </div>

@@ -65,7 +65,34 @@ const NoteDetails = ({ params }) => {
       setIsLoading(false);
     }
   };
+  const calculateElapsedTime = (creationDateTime) => {
+    const creationTime = new Date(creationDateTime).getTime();
+    const currentTime = new Date().getTime();
+    const difference = currentTime - creationTime;
 
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const mins = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+
+    let elapsedTime = "";
+    if (days > 0) {
+      elapsedTime += `${days} day${days > 1 ? "s" : ""}`;
+    }
+    if (hours > 0) {
+      elapsedTime += `${elapsedTime ? ", " : ""}${hours} hour${
+        hours > 1 ? "s" : ""
+      }`;
+    }
+    if (mins > 0) {
+      elapsedTime += `${elapsedTime ? ", " : ""}${mins} minute${
+        mins > 1 ? "s" : ""
+      }`;
+    }
+
+    return elapsedTime || "Just now";
+  };
   return (
     <main>
       <button
@@ -83,7 +110,10 @@ const NoteDetails = ({ params }) => {
       )}
       {note && (
         <div className="p-3">
-          <h1 className="text-center font-bold text-3xl mb-3">{note.title}</h1>
+          <h1 className="text-center font-bold text-3xl my-2">{note.title}</h1>
+          <h1 className="italic text-center text-lg mb-2">
+            {calculateElapsedTime(note.creationDateTime)} ago
+          </h1>
           <h1>{note.body}</h1>
           <div className="flex gap-3 mt-5 justify-center content-center">
             <button

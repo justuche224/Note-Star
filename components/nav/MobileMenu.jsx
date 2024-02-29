@@ -8,12 +8,21 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
-import Themes from "./Themes";
 
-const MobileMenu = ({ session, toggleMoileMenu }) => {
+const MobileMenu = ({ session, setOpenMobileMenu }) => {
+  const handleMenuClick = () => {
+    if (event.target.closest(".main-mobile")) {
+      return;
+    }
+    setOpenMobileMenu(false);
+  };
+
   return (
-    <>
-      <div className="md:hidden block gap-8 w-[60%] min-h-screen fixed top-16 -right-2 bg-slate-300 dark:bg-gray-900">
+    <div
+      className="w-full bg-[#00000075] md:hidden fixed top-16 min-h-screen left-0"
+      onClick={handleMenuClick}
+    >
+      <div className="main-mobile md:hidden block gap-8 w-[60%] min-h-screen fixed top-16 -right-2 bg-white dark:bg-gray-900 shadow-2xl">
         <div className="block md:hidden">
           <div className="flex content-center justify-center gap-2 p-3">
             <div>
@@ -41,7 +50,6 @@ const MobileMenu = ({ session, toggleMoileMenu }) => {
                 <button
                   type="button"
                   onClick={() => {
-                    toggleMoileMenu;
                     signOut();
                   }}
                 >
@@ -81,11 +89,8 @@ const MobileMenu = ({ session, toggleMoileMenu }) => {
             <FaTrash className="inline-block" /> Deleted
           </Link>
         </div>
-        <div className="grid place-content-center mt-3">
-          <Themes />
-        </div>
       </div>
-    </>
+    </div>
   );
 };
 

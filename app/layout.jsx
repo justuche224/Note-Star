@@ -2,6 +2,7 @@ import Nav from "@/components/nav/Nav";
 import Provider from "@/components/Provider";
 import "./globals.css";
 import { SearchProvider } from "./context/SearchContext";
+import Themes from "@/components/nav/Themes";
 
 export const metadata = {
   title: "Note Star: Take Notes and Shine Bright",
@@ -35,15 +36,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light">
       <head>
         <link rel="icon" href="/icons/favicon.ico" sizes="any" />
       </head>
       <Provider>
-        <body className="bg-white dark:bg-black min-h-screen text-black dark:text-white">
+        <body className=" bg-blue-200 dark:bg-black min-h-screen text-black dark:text-white relative">
           <SearchProvider>
             <Nav />
             <main className=" mt-20">{children}</main>
+            <div className="fixed bottom-0 left-0">
+              <Themes />
+            </div>
           </SearchProvider>
         </body>
       </Provider>

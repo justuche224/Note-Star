@@ -1,3 +1,4 @@
+import { Tiptap } from "@/components/Tiptap";
 import NoteContainer from "@/components/notes/NoteContainer";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
         designed to enhance your workflow. Elevate your note-taking experience
         today.
       </h1>
+      <Tiptap />
       <NoteContainer />
     </main>
   );

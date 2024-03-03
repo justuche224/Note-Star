@@ -9,14 +9,15 @@ export const NoteItem = ({ note, handleDeleteNote, handleNoteClick }) => {
 
   return (
     <div onClick={() => handleNoteClick(note)}>
-      <h1 className="text-xl italic p-1">{note.title}</h1>
+      <h1 className="note-visible-title text-xl italic p-1">{note.title}</h1>
       <div className="ProseMirror note">{parse(note.body)}</div>
       <div className="task-actions bg-white dark:bg-[#3d3d3d]">
-        <span className="edit fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-blue-400 border border-slate-200 text-black">
-          <Link href={`/update-note?id=${note._id}`}>
-            <FaPen />
-          </Link>
-        </span>
+        <Link
+          href={`/update-note?id=${note._id}`}
+          className="edit fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-blue-400 border border-slate-200 text-black"
+        >
+          <FaPen />
+        </Link>
 
         <span
           className="delete fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-blue-400 border border-slate-200 text-black"

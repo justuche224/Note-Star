@@ -2,7 +2,6 @@ import { FaBell, FaBook, FaQuestionCircle, FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
-import Themes from "./Themes";
 
 const DesktopMenu = ({ session }) => {
   return (

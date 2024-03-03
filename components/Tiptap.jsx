@@ -165,7 +165,7 @@ export const Tiptap = () => {
           type="text"
           placeholder="Note Title"
           aria-label="note title"
-          className="my-3 p-1 border dark:bg-[#3d3d3d] text-white border-gray-400 rounded w-full"
+          className="my-3 p-1 border dark:bg-[#3d3d3d] dark:text-white text-black border-gray-400 rounded w-full"
           value={title}
           onChange={handleTitleChange}
         />

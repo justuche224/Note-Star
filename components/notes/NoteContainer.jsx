@@ -144,7 +144,7 @@ const NoteContainer = () => {
                 aria-label="Seach notes"
                 placeholder="Search notes...."
                 value={searchQuery}
-                className="w-full h-10 p-2 mb-3 dark:bg-[#3d3d3d] text-white rounded"
+                className="w-full h-10 p-2 mb-3 dark:bg-[#3d3d3d] dark:text-white text-black rounded"
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
@@ -179,12 +179,14 @@ const NoteContainer = () => {
             <h1 className="text-3xl font-bold">
               Please Log In to View, Create and Edit Notes
             </h1>
-            <button
-              type="button"
+
+            <Link
+              href="/auth/signin"
+              aria-label="log in or sign up"
               className="px-3 py-2 bg-blue-700 text-white hover:opacity-80 mt-2 rounded-md"
             >
-              <Link href="/auth/signin">Log In or Sign Up</Link>
-            </button>
+              Log In or Sign Up
+            </Link>
           </div>
         )}
       </section>

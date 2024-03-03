@@ -3,6 +3,7 @@ import { signIn, getProviders, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useSearchParams, redirect } from "next/navigation";
 import Image from "next/image";
+import InlineLoader from "../loading/InlineLoader";
 
 export default function SignIn() {
   const searchParams = useSearchParams();
@@ -60,7 +61,9 @@ export default function SignIn() {
             </div>
           )}
           {loadingProviders ? (
-            <p className="mb-4 text-gray-600">Loading providers...</p>
+            <div className="w-full grid place-content-center">
+              <InlineLoader />
+            </div>
           ) : providers && !session ? (
             <div>
               <h1 className="text-center text-2xl my-4">
